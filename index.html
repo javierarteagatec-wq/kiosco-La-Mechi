@@ -85,18 +85,24 @@ h2 {
   border-bottom: 2px solid #bbdefb;
 }
 
-/* ANIMACIONES */
+/* Animaciones */
 @keyframes pop {
   0% { transform: scale(1); }
   50% { transform: scale(1.1); }
   100% { transform: scale(1); }
 }
+.product.added { animation: pop 0.25s ease; }
 
-.product.added {
-  animation: pop 0.25s ease;
+@keyframes vibrate {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-3px); }
+  50% { transform: translateX(3px); }
+  75% { transform: translateX(-3px); }
+  100% { transform: translateX(0); }
 }
+.total-float.vibrate { animation: vibrate 0.3s; }
 
-/* TOTAL FLOTANTE */
+/* Total flotante */
 .total-float {
   position: fixed;
   bottom: 90px;
@@ -110,20 +116,7 @@ h2 {
   z-index: 998;
 }
 
-/* VIBRACIÓN */
-@keyframes vibrate {
-  0% { transform: translateX(0); }
-  25% { transform: translateX(-3px); }
-  50% { transform: translateX(3px); }
-  75% { transform: translateX(-3px); }
-  100% { transform: translateX(0); }
-}
-
-.total-float.vibrate {
-  animation: vibrate 0.3s;
-}
-
-/* WHATSAPP */
+/* WhatsApp flotante */
 .wpp-float {
   position: fixed;
   bottom: 20px;
@@ -134,7 +127,27 @@ h2 {
   border-radius: 50px;
   font-size: 16px;
   box-shadow: 0 6px 15px rgba(0,0,0,.3);
+  cursor:pointer;
 }
+
+/* Métodos de pago */
+#paymentMethod { margin-top:1rem; display:flex; gap:10px; flex-wrap:wrap; }
+.payOption {
+  cursor: pointer;
+  background: #bbdefb;
+  padding: 10px 16px;
+  border-radius: 12px;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 2px solid transparent;
+  transition: all 0.2s;
+}
+.payOption:hover { background: #90caf9; }
+.payOption.selected { border-color: #0d47a1; background: #1976d2; color: white; }
+#aliasBox { display:none; margin-top:0.5rem; background:#fff; padding:0.5rem; border-radius:6px; }
+
 </style>
 </head>
 
@@ -142,7 +155,7 @@ h2 {
 
 <header>
   <h1>Kiosco La Mechi</h1>
-  <p>Pedidos por WhatsApp · Pago por transferencia</p>
+  <p>Pedidos por WhatsApp · Seleccioná método de pago</p>
 </header>
 
 <div class="container">
@@ -153,6 +166,17 @@ h2 {
   <h2>🛒 Tu pedido</h2>
   <ul id="cart"></ul>
   <p><strong>Total: $<span id="total">0.00</span></strong></p>
+
+  <h3>💳 Método de pago</h3>
+  <div id="paymentMethod">
+    <div class="payOption selected" data-value="efectivo">💵 Efectivo</div>
+    <div class="payOption" data-value="transferencia">🏦 Transferencia</div>
+  </div>
+
+  <div id="aliasBox">
+    <strong>Alias:</strong> barrientos0820<br>
+    <strong>Titular:</strong> Gabriel Agustin Barrientos
+  </div>
 </div>
 
 <div class="total-float" id="totalBox">
@@ -166,70 +190,28 @@ h2 {
 </audio>
 
 <script>
-    function vibratePhone(pattern = [60]) {
-  if (navigator.vibrate) {
-    navigator.vibrate(pattern);
-  }
-}
+function vibratePhone(pattern=[60]){ if(navigator.vibrate){navigator.vibrate(pattern);} }
 
 const products = [
-    //BEBIDAS
-  { category:'Bebidas',
-    name:'Coca-Cola 2.5L',
-    price:3700,
-    img:'bebidas/coca.jfif' },
-
-  { category:'Bebidas',
-    name:'Coca-Cola 2.5L',
-    price:3700,
-    img:'bebidas/manaos.jfif' },
-
-    { category:'Bebidas',
-    name:'Coca-Cola 2.5L',
-    price:3700,
-    img:'bebidas/manaos.jfif' },
-    //MERCADERIA
- { category:'Mercadería',
-    name:'Yerba 500g',
-    price:1800,
-    img:'mercaderias/bdia.png' },
-    
-{ category:'Mercadería',
-    name:'Yerba 500g',
-    price:1800,
-    img:'mercaderias/bdia.png' },
-        //GOLOSINAS
-{ category:'Golosinas',
-    name:'Yerba 500g',
-    price:1800,
-    img:'mercaderias/bdia.png' },
-
-{ category:'Golosinas',
-    name:'Yerba 500g',
-    price:1800,
-    img:'mercaderias/bdia.png' },
-    //CIGARROS
-    
-
-
-]
+  { category:'Bebidas', name:'Coca-Cola 2.5L', price:3700, img:'bebidas/coca.jfif' },
+  { category:'Bebidas', name:'Manaos 3L', price:2000, img:'bebidas/manaos.jfif' },
+  { category:'Mercadería', name:'Yerba 500g', price:1800, img:'mercaderias/bdia.png' },
+  { category:'Golosinas', name:'Chocolate', price:1500, img:'mercaderias/bdia.png' }
+];
 
 let cart = [];
+let selectedPayment = 'efectivo';
 
-function getQty(name) {
-  const item = cart.find(p => p.name === name);
-  return item ? item.qty : 0;
-}
+function getQty(name){ const item=cart.find(p=>p.name===name); return item? item.qty:0; }
 
-function renderProducts() {
-  const list = document.getElementById('productList');
-  list.innerHTML = '';
+function renderProducts(){
+  const list = document.getElementById('productList'); list.innerHTML='';
   const cats = [...new Set(products.map(p=>p.category))];
 
   cats.forEach(c=>{
-    list.innerHTML += `<h2>${c}</h2>`;
+    list.innerHTML+=`<h2>${c}</h2>`;
     products.filter(p=>p.category===c).forEach(p=>{
-      list.innerHTML += `
+      list.innerHTML+=`
       <div class="product">
         <img src="${p.img}">
         <h3>${p.name}</h3>
@@ -244,68 +226,57 @@ function renderProducts() {
   });
 }
 
-function addToCart(name, price, e) {
-  const item = cart.find(p => p.name === name);
-  item ? item.qty++ : cart.push({ name, price, qty: 1 });
-
+function addToCart(name,price,e){
+  const item=cart.find(p=>p.name===name); item? item.qty++: cart.push({name,price,qty:1});
   document.getElementById('addSound').play();
-    vibratePhone([40]);
-
+  vibratePhone([40]);
   e.target.closest('.product').classList.add('added');
   setTimeout(()=>e.target.closest('.product').classList.remove('added'),300);
-
-  renderProducts();
-  renderCart();
+  renderProducts(); renderCart();
 }
 
-function removeOne(name) {
-  const item = cart.find(p => p.name === name);
-  if (!item) return;
-
-  item.qty--;
-  vibratePhone([20, 30, 20]); //vibracion al quitar
-
-  if (item.qty === 0) cart = cart.filter(p => p.name !== name);
-
-  renderProducts();
-  renderCart();
+function removeOne(name){
+  const item=cart.find(p=>p.name===name); if(!item) return;
+  item.qty--; vibratePhone([20,30,20]);
+  if(item.qty===0) cart=cart.filter(p=>p.name!==name);
+  renderProducts(); renderCart();
 }
 
-function renderCart() {
-  const ul = document.getElementById('cart');
-  const totalSpan = document.getElementById('total');
-  const totalFloat = document.getElementById('totalFloat');
-  const totalBox = document.getElementById('totalBox');
-
-  ul.innerHTML = '';
-  let total = 0;
-
+function renderCart(){
+  const ul=document.getElementById('cart');
+  const totalSpan=document.getElementById('total');
+  const totalFloat=document.getElementById('totalFloat');
+  const totalBox=document.getElementById('totalBox');
+  ul.innerHTML=''; let total=0;
   cart.forEach(p=>{
-    ul.innerHTML += `<li>${p.qty} × ${p.name} — $${(p.price*p.qty).toFixed(2)}</li>`;
-    total += p.price * p.qty;
+    ul.innerHTML+=`<li>${p.qty} × ${p.name} — $${(p.price*p.qty).toFixed(2)}</li>`;
+    total+=p.price*p.qty;
   });
-
-  totalSpan.textContent = total.toFixed(2);
-  totalFloat.textContent = total.toFixed(2);
-
-  totalBox.classList.add('vibrate');
-  setTimeout(()=>totalBox.classList.remove('vibrate'),300);
+  totalSpan.textContent=total.toFixed(2);
+  totalFloat.textContent=total.toFixed(2);
+  totalBox.classList.add('vibrate'); setTimeout(()=>totalBox.classList.remove('vibrate'),300);
 }
 
-function sendWhatsApp() {
+// Manejo selección método de pago
+document.querySelectorAll('.payOption').forEach(el=>{
+  el.addEventListener('click', ()=>{
+    document.querySelectorAll('.payOption').forEach(e=>e.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedPayment = el.dataset.value;
+    document.getElementById('aliasBox').style.display = selectedPayment==='transferencia'? 'block':'none';
+  });
+});
+
+function sendWhatsApp(){
   if(cart.length===0) return alert('Carrito vacío');
-
-  let msg='Hola! Quiero pedir:%0A';
-  let total=0;
-
+  let msg='Hola! Quiero pedir:%0A'; let total=0;
   cart.forEach(p=>{
     msg+=`- ${p.qty} x ${p.name} ($${(p.price*p.qty).toFixed(2)})%0A`;
     total+=p.price*p.qty;
   });
-
   msg+=`%0ATotal: $${total.toFixed(2)}`;
-  msg+=`%0APago por transferencia%0AAlias: barrientos0820`;
-
+  if(selectedPayment==='transferencia') msg+=`%0APago por transferencia%0AAlias: barrientos0820`;
+  else msg+=`%0APago en efectivo`;
   window.open('https://wa.me/5493873656775?text='+msg,'_blank');
 }
 
