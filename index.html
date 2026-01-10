@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kiosco La Mechi</title>
+
+  <style>
+    button {
+  background: #1976d2;
+  color: white;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 0.5rem;
+}
+
+
+button:hover {
+  background: #0d47a1;
+}
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      margin: 0;
+      background: #e3f2fd; /* fondo celeste */
+      color: #0d47a1;
+    }
+
+    header {
+      background: linear-gradient(135deg, #1976d2, #0d47a1);
+      color: rgb(230, 230, 230);
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2.2rem;
+    }
+
+    header p {
+      margin: 0.5rem 0 0;
+      opacity: 0.9;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 1.5rem;
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .product {
+      background: white;
+      border-radius: 12px;
+      padding: 1rem;
+      box-shadow: 0 6px 15px rgba(13,71,161,0.15);
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-align: center;
+    }
+
+    .product:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(13,71,161,0.25);
+    }
+
+   .product img {
+  width: 100%;
+  height: 140px;          /* altura fija */
+  object-fit: contain;   /* no recorta la imagen */
+  border-radius: 10px;
+  margin-bottom: 0.8rem;
+  background: #e3f2fd;   /* fondo celeste prolijo */
+}
+
+
+    .product h3 {
+      margin: 0.3rem 0;
+      font-size: 1.1rem;
+      color: #0d47a1;
+    }
+
+   .price {
+  display: inline-block;
+  background: #e3f2fd;
+  color: #0d47a1;
+  padding: 0.3rem 0.6rem;
+  border-radius: 999px;
+  font-weight: bold;
+  margin-top: 0.5rem;
+}
+
+
+    h2 {
+      color: #0d47a1;
+      border-bottom: 2px solid #bbdefb;
+      padding-bottom: 0.3rem;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1.5rem;
+      margin-top: 2rem;
+      font-size: 0.9rem;
+      color: #0d47a1;
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <header>
+    <h1>Kiosco La Mechi</h1>
+    <p>Precios actualizados – Atención todos los días</p> <p> 3873-656775</p>
+  </header>
+
+  <div class="container">
+    <div class="products" id="productList"></div>
+  </div>
+  <div class="container">
+  <h2>🛒 Tu pedido</h2>
+  <ul id="cartList"></ul>
+  <p><strong>Total: $<span id="total">0</span></strong></p>
+  <button onclick="sendWhatsApp()">Enviar por WhatsApp</button>
+</div>
+
+  <footer>
+    <p>Consultá precios en el local · Gracias por tu compra</p>
+  </footer>
+
+  <script>
+ 
+
+function sendWhatsApp() {
+  if (cart.length === 0) {
+    alert('El carrito está vacío');
+    return;
+  }
+
+  let message = 'Hola! Quiero pedir:%0A';
+
+  cart.forEach(item => {
+    message += `- ${item.name} ($${item.price})%0A`;
+  });
+
+  const total = cart.reduce((sum, i) => sum + i.price, 0);
+  message += `%0ATotal: $${total}`;
+
+  const phone = '5493873656775';
+  const url = `https://wa.me/${phone}?text=${message}`;
+
+  window.open(url, '_blank');
+}
+
+    function renderCart() {
+  const list = document.getElementById('cartList');
+  const totalSpan = document.getElementById('total');
+
+  list.innerHTML = '';
+  let total = 0;
+
+  cart.forEach(item => {
+    list.innerHTML += `<li>${item.name} - $${item.price}</li>`;
+    total += item.price;
+  });
+
+  totalSpan.textContent = total;
+}
+    const products = [
+      {
+        category: 'Bebidas',
+        name: 'Coca-Cola 2.5L',
+        price: 3700,
+        img: 'bebidas/coca.jfif'
+      },
+      {
+        category: 'Bebidas',
+        name: 'Manaos 3L',
+        price: 2000,
+        img: 'bebidas/manaos.jfif'
+      },
+      {
+        category: 'Mercería',
+        name: 'Yerba Mate 500g',
+        price: 1800,
+        img: 'mercaderias/bdia.png'
+      },
+      {
+        category: 'Golosinas',
+        name: 'Chocolate Milka',
+        price: 1500,
+        img: 'imagenes/milka.jpg'
+      }
+    ];
+
+    function renderProducts() {
+      const list = document.getElementById('productList');
+      list.innerHTML = '';
+
+      const categories = [...new Set(products.map(p => p.category))];
+
+      categories.forEach(category => {
+        list.innerHTML += `<h2 style="grid-column: 1 / -1;">${category}</h2>`;
+
+        products
+          .filter(p => p.category === category)
+          .forEach(product => {
+            list.innerHTML += `
+              <div class="product">
+                <img src="${product.img}" alt="${product.name}">
+                <h3>${product.name}</h3>
+                <div class="price">$${product.price}</div>
+                <button onclick="addToCart('${product.name}', ${product.price})">
+                  Agregar
+                    </button>
+              </div>
+            `;
+          });
+      });
+    }
+    let cart = [];
+
+    function addToCart(name, price) {
+  cart.push({ name, price });
+  renderCart();
+}
+
+    renderProducts();
+  </script>
+
+</body>
+</html>
