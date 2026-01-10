@@ -167,11 +167,17 @@ h2 {
   <ul id="cart"></ul>
   <p><strong>Total: $<span id="total">0.00</span></strong></p>
 
-  <h3>💳 Método de pago</h3>
-  <div id="paymentMethod">
-    <div class="payOption selected" data-value="efectivo">💵 Efectivo</div>
-    <div class="payOption" data-value="transferencia">🏦 Transferencia</div>
-  </div>
+<h3>💳 Método de pago</h3>
+<div id="paymentMethod" style="display:flex; flex-direction:column; gap:10px;">
+  <div class="payOption selected" data-value="efectivo">💵 Efectivo</div>
+  <div class="payOption" data-value="transferencia">🏦 Transferencia</div>
+</div>
+
+<div id="aliasBox" style="display:none; margin-left:20px; margin-top:5px;">
+  <strong>Alias:</strong> barrientos0820<br>
+  <strong>Titular:</strong> Gabriel Agustin Barrientos
+</div>
+
 
   <div id="aliasBox">
     <strong>Alias:</strong> barrientos0820<br>
@@ -285,3 +291,4 @@ renderProducts();
 
 </body>
 </html>
+
