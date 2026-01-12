@@ -34,45 +34,17 @@
   </div>
 </div>
 
-<!-- Flotantes, FUERA de cualquier container -->
 <div class="total-float" id="totalBox">
   🧾 Total: $<span id="totalFloat">0.00</span>
 </div>
 
 <a class="wpp-float" onclick="sendWhatsApp()">📲 Enviar pedido</a>
 
-<audio id="addSound">
-  <source src="https://assets.mixkit.co/sfx/preview/mixkit-select-click-1109.mp3">
-</audio>
+<footer class="footer">
+  <p>Las imágenes son ilustrativas.</p>
+  <span>© 2026 Kiosco La Mechi</span>
+</footer>
 
-<script>
-function vibratePhone(pattern=[60]){ if(navigator.vibrate){navigator.vibrate(pattern);} }
-
-const products = [
-  { category:'Bebidas', name:'Coca-Cola 2.5L', price:3700, img:'bebidas/coca.jfif' },
-  { category:'Bebidas', name:'Manaos 3L', price:2000, img:'bebidas/manaos.jfif' },
-  { category:'Mercadería', name:'Yerba 500g', price:1800, img:'mercaderias/bdia.png' },
-  { category:'Golosinas', name:'Chocolate', price:1500, img:'mercaderias/bdia.png' }
-];
-
-let cart = [];
-let selectedPayment = 'efectivo';
-
-function getQty(name){ const item=cart.find(p=>p.name===name); return item? item.qty:0; }
-
-function renderProducts(){
-  const list = document.getElementById('productList'); list.innerHTML='';
-  const cats = [...new Set(products.map(p=>p.category))];
-
-  cats.forEach(c=>{
-    list.innerHTML+=`<h2>${c}</h2>`;
-    products.filter(p=>p.category===c).forEach(p=>{
-      list.innerHTML+=`
-      <div class="product">
-        <img src="${p.img}">
-        <h3>${p.name}</h3>
-        <div class="price">$${p.price}</div>
-        <div class="controls">
-          <button onclick="addToCart('${p.name}',${p.price},event)">+</button>
-          <span class="counter">${
-
+<script src="script.js"></script>
+</body>
+</html>
