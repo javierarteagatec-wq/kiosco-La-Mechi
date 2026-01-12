@@ -7,8 +7,6 @@ body {
   background: linear-gradient(135deg, #e3f2fd, #bbdefb, #90caf9);
 }
 
-
-
 header {
   background: linear-gradient(135deg, #1976d2, #0d47a1);
   color: white;
@@ -18,6 +16,7 @@ header {
   border-bottom-right-radius: 40px;
   box-shadow: 0 6px 20px rgba(0,0,0,.25);
 }
+
 header h1 {
   margin: 0;
   font-size: 2.6rem;
@@ -31,20 +30,38 @@ header p {
   opacity: 0.9;
 }
 
-
 .container {
   max-width: 1100px;
   margin: auto;
   padding: 1rem;
 }
 
-.products {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+.container:first-of-type {
+  margin-top: 2rem;
+}
+
+/* Productos */
+.horizontal-scroll {
+  display: flex;
   gap: 1rem;
+  overflow-x: auto;
+  padding: 1rem 0;
+  scroll-snap-type: x mandatory;
+}
+
+.horizontal-scroll::-webkit-scrollbar {
+  height: 8px;
+}
+
+.horizontal-scroll::-webkit-scrollbar-thumb {
+  background: #90caf9;
+  border-radius: 10px;
 }
 
 .product {
+  min-width: 220px;
+  flex-shrink: 0;
+  scroll-snap-align: start;
   background: white;
   border-radius: 12px;
   padding: 1rem;
@@ -95,12 +112,13 @@ h2 {
   border-bottom: 2px solid #bbdefb;
 }
 
-/* Animaciones */
+/* Animaciones de producto */
 @keyframes pop {
   0% { transform: scale(1); }
   50% { transform: scale(1.1); }
   100% { transform: scale(1); }
 }
+
 .product.added { animation: pop 0.25s ease; }
 
 @keyframes vibrate {
@@ -110,6 +128,7 @@ h2 {
   75% { transform: translateX(-3px); }
   100% { transform: translateX(0); }
 }
+
 .total-float.vibrate { animation: vibrate 0.3s; }
 
 /* Total flotante */
@@ -178,32 +197,7 @@ h2 {
   border-radius:6px;
 }
 
-.container:first-of-type {
-  margin-top: 2rem;
-}
-
-.horizontal-scroll {
-  display: flex;
-  gap: 1rem;
-  overflow-x: auto;
-  padding: 1rem 0;
-  scroll-snap-type: x mandatory;
-}
-
-.horizontal-scroll::-webkit-scrollbar {
-  height: 8px;
-}
-
-.horizontal-scroll::-webkit-scrollbar-thumb {
-  background: #90caf9;
-  border-radius: 10px;
-}
-
-.product {
-  min-width: 220px;
-  scroll-snap-align: start;
-  flex-shrink: 0;
-}
+/* Footer */
 .footer {
   margin-top: 3rem;
   padding: 1.5rem 1rem;
@@ -228,6 +222,11 @@ h2 {
   opacity: 0.75;
 }
 
-
-
-
+/* Subcategorías opcionales */
+h3 {
+  grid-column: 1 / -1;
+  margin: 1.2rem 0 0.5rem;
+  color: #1565c0;
+  border-left: 6px solid #1976d2;
+  padding-left: 10px;
+}
