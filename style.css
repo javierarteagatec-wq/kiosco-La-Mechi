@@ -10,9 +10,25 @@ body {
 header {
   background: linear-gradient(135deg, #1976d2, #0d47a1);
   color: white;
-  padding: 2rem;
+  padding: 3rem 1rem;
   text-align: center;
+  border-bottom-left-radius: 40px;
+  border-bottom-right-radius: 40px;
+  box-shadow: 0 6px 20px rgba(0,0,0,.25);
 }
+header h1 {
+  margin: 0;
+  font-size: 2.6rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+header p {
+  margin-top: 0.5rem;
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
 
 .container {
   max-width: 1100px;
@@ -124,10 +140,11 @@ h2 {
 
 /* Métodos de pago */
 #paymentMethod {
-  margin-top:1rem;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
+  margin-top: 1rem;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .payOption {
@@ -158,3 +175,59 @@ h2 {
   padding:0.5rem;
   border-radius:6px;
 }
+
+.container:first-of-type {
+  margin-top: 2rem;
+}
+
+.horizontal-scroll {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding: 1rem 0;
+  scroll-snap-type: x mandatory;
+}
+
+.horizontal-scroll::-webkit-scrollbar {
+  height: 8px;
+}
+
+.horizontal-scroll::-webkit-scrollbar-thumb {
+  background: #90caf9;
+  border-radius: 10px;
+}
+
+.product {
+  min-width: 220px;
+  scroll-snap-align: start;
+  flex-shrink: 0;
+}
+.footer {
+  margin-top: 3rem;
+  padding: 1.5rem 1rem;
+  background: linear-gradient(135deg, #0d47a1, #1976d2);
+  color: white;
+  text-align: center;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
+  box-shadow: 0 -6px 20px rgba(0,0,0,.25);
+}
+
+.footer p {
+  margin: 0;
+  font-size: 0.95rem;
+  opacity: 0.9;
+}
+
+.footer span {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  opacity: 0.75;
+}
+
+  background:#fff;
+  padding:0.5rem;
+  border-radius:6px;
+}
+
