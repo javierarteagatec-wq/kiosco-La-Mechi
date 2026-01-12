@@ -50,7 +50,7 @@ const products = [
   { category:'Mercadería', name:'Sal 500mg', price:500, img:'mercaderias/sal.jfif' },
   { category:'Mercadería', name:'Azucar 1K', price:1400, img:'mercaderias/azucar.jfif' },
   { category:'Mercadería', name:'Fideo Spagetti', price:1700, img:'mercaderias/fideoS.jfif' },
-  { category:'Mercadería', name:'Fideo Guiseros', price:1700, img:'mercaderias/fideoG.jfif' },
+  { category:'Mercadería', name:'Fideo Guiseros', price:1700, img:'mercaderias/FideoG.jfif' },
   { category:'Mercadería', name:'Aceite 900mL', price:3900, img:'mercaderias/aceite.jfif' },
   { category:'Mercadería', name:'Vinagre 900mL', price:2600, img:'mercaderias/vinagre.jfif' },
 
@@ -187,3 +187,4 @@ function sendWhatsApp() {
 }
 
 renderProducts();
+
