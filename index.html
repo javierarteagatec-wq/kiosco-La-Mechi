@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kiosco La Mechi</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kiosco La Mechi</title>
+<link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
 <header>
@@ -15,7 +14,7 @@
 </header>
 
 <div class="container">
-  <div class="products" id="productList"></div>
+  <div class="products horizontal-scroll" id="productList"></div>
 </div>
 
 <div class="container">
@@ -35,6 +34,7 @@
   </div>
 </div>
 
+<!-- Flotantes, FUERA de cualquier container -->
 <div class="total-float" id="totalBox">
   🧾 Total: $<span id="totalFloat">0.00</span>
 </div>
@@ -45,15 +45,34 @@
   <source src="https://assets.mixkit.co/sfx/preview/mixkit-select-click-1109.mp3">
 </audio>
 
-<script src="script.js"></script>
+<script>
+function vibratePhone(pattern=[60]){ if(navigator.vibrate){navigator.vibrate(pattern);} }
 
-<footer class="footer">
-  <p>🛈 Las imágenes son ilustrativas. Los productos pueden variar según disponibilidad.</p>
-  <span>© 2026 · Kiosco La Mechi</span>
-</footer>
+const products = [
+  { category:'Bebidas', name:'Coca-Cola 2.5L', price:3700, img:'bebidas/coca.jfif' },
+  { category:'Bebidas', name:'Manaos 3L', price:2000, img:'bebidas/manaos.jfif' },
+  { category:'Mercadería', name:'Yerba 500g', price:1800, img:'mercaderias/bdia.png' },
+  { category:'Golosinas', name:'Chocolate', price:1500, img:'mercaderias/bdia.png' }
+];
 
+let cart = [];
+let selectedPayment = 'efectivo';
 
-</body>
-</html>
+function getQty(name){ const item=cart.find(p=>p.name===name); return item? item.qty:0; }
 
+function renderProducts(){
+  const list = document.getElementById('productList'); list.innerHTML='';
+  const cats = [...new Set(products.map(p=>p.category))];
+
+  cats.forEach(c=>{
+    list.innerHTML+=`<h2>${c}</h2>`;
+    products.filter(p=>p.category===c).forEach(p=>{
+      list.innerHTML+=`
+      <div class="product">
+        <img src="${p.img}">
+        <h3>${p.name}</h3>
+        <div class="price">$${p.price}</div>
+        <div class="controls">
+          <button onclick="addToCart('${p.name}',${p.price},event)">+</button>
+          <span class="counter">${
 
