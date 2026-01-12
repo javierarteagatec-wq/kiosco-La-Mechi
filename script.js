@@ -27,10 +27,33 @@ const products = [
   { category:'Jugos', name:'Agua mineral 1,5L', price:1300, img:'bebidas/Agua.jfif' },
   { category:'Jugos', name:'Soda TalcaL', price:2000, img:'bebidas/soda.jfif' },
   { category:'Jugos', name:'Ades 1L', price:2900, img:'bebidas/ades.jfif' },
+  { category:'Jugos', name:'Chocolatada 1L', price:2700, img:'bebidas/chocolatada.jfif' },
+  { category:'Jugos', name:'Chocolatada 200mL', price:1200, img:'bebidas/chocolatada.jfif' },
+  { category:'Jugos', name:'Cepita 200mL', price:1200, img:'bebidas/cepita3.jfif' },
+  { category:'Jugos', name:'Baggio 200mL', price:1200, img:'bebidas/baggio.jfif' },
 
+  //Mercaderia
 
+  { category:'Mercadería', name:'Buen Dia 250g', price:1300, img:'mercaderias/bdia.png' },
+  { category:'Mercadería', name:'Mañanita 500g', price:2600, img:'mercaderias/maña.jfif' },
+  { category:'Mercadería', name:'Amanda 260g', price:1500, img:'mercaderias/amanda.jfif' },
+  { category:'Mercadería', name:'Arroz 1Kg', price:1400, img:'mercaderias/arroz.jfif' },
+  { category:'Mercadería', name:'Caja de Te', price:1500, img:'mercaderias/te.jfif' },
+  { category:'Mercadería', name:'Caja Mate cocido', price:1700, img:'mercaderias/mate.jfif' },
+  { category:'Mercadería', name:'Picadillo', price:700, img:'mercaderias/picadillo.jfif' },
+  { category:'Mercadería', name:'Atun', price:2500, img:'mercaderias/atun.jfif' },
+  { category:'Mercadería', name:'Mermelada 500g', price:1600, img:'mercaderias/mermelada.jfif' },
+  { category:'Mercadería', name:'Dulce de Leche 200g', price:2700, img:'mercaderias/dulcedl.jfif' },
+  { category:'Mercadería', name:'Leche 1L', price:2300, img:'mercaderias/leche.jfif' },
+  { category:'Mercadería', name:'pure de tomate', price:1200, img:'mercaderias/tomate.jfif' },
+  { category:'Mercadería', name:'Harina', price:1100, img:'mercaderias/leche.jfif' },
+  { category:'Mercadería', name:'Sal 500mg', price:500, img:'mercaderias/sal.jfif' },
+  { category:'Mercadería', name:'Azucar 1K', price:1400, img:'mercaderias/azucar.jfif' },
+  { category:'Mercadería', name:'Fideo Spagetti', price:1700, img:'mercaderias/fideoS.jfif' },
+  { category:'Mercadería', name:'Fideo Guiseros', price:1700, img:'mercaderias/fideoG.jfif' },
+  { category:'Mercadería', name:'Aceite 900mL', price:3900, img:'mercaderias/aceite.jfif' },
+  { category:'Mercadería', name:'Vinagre 900mL', price:2600, img:'mercaderias/vinagre.jfif' },
 
-  { category:'Mercadería', name:'Yerba 500g', price:1800, img:'mercaderias/bdia.png' },
   { category:'Golosinas', name:'Chocolate', price:1500, img:'mercaderias/bdia.png' }
 ];
 
@@ -46,25 +69,35 @@ function renderProducts() {
   const list = document.getElementById('productList');
   list.innerHTML = '';
 
-  const cats = [...new Set(products.map(p => p.category))];
+  const categories = [...new Set(products.map(p => p.category))];
 
-  cats.forEach(c => {
-    list.innerHTML += `<h2>${c}</h2>`;
-    products.filter(p => p.category === c).forEach(p => {
-      list.innerHTML += `
-        <div class="product">
-          <img src="${p.img}">
-          <h3>${p.name}</h3>
-          <div class="price">$${p.price}</div>
-          <div class="controls">
-            <button onclick="addToCart('${p.name}',${p.price},event)">+</button>
-            <span class="counter">${getQty(p.name)}</span>
-            <button class="remove" onclick="removeOne('${p.name}')">−</button>
+  categories.forEach(cat => {
+    list.innerHTML += `
+      <h2>${cat}</h2>
+      <div class="horizontal-scroll" id="scroll-${cat}"></div>
+    `;
+
+    const container = document.getElementById(`scroll-${cat}`);
+
+    products
+      .filter(p => p.category === cat)
+      .forEach(p => {
+        container.innerHTML += `
+          <div class="product">
+            <img src="${p.img}">
+            <h3>${p.name}</h3>
+            <div class="price">$${p.price}</div>
+            <div class="controls">
+              <button class="remove" onclick="removeOne('${p.name}')">−</button>
+              <span class="counter">${getQty(p.name)}</span>
+              <button onclick="addToCart('${p.name}',${p.price},event)">+</button>
+            </div>
           </div>
-        </div>`;
-    });
+        `;
+      });
   });
 }
+
 
 function addToCart(name, price, e) {
   const item = cart.find(p => p.name === name);
@@ -154,3 +187,9 @@ function sendWhatsApp() {
 }
 
 renderProducts();
+
+  );
+}
+
+renderProducts();
+
