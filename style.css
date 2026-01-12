@@ -1,10 +1,11 @@
 * { box-sizing: border-box; } 
 
-body {
+body, html {
   font-family: 'Segoe UI', Arial, sans-serif;
   margin: 0;
   background: #e3f2fd;
   color: #0d47a1;
+  overflow-x: hidden; /* evita que el scroll horizontal corte los flotantes */
 }
 
 header {
@@ -133,7 +134,7 @@ h2 {
 /* Total flotante */
 .total-float {
   position: fixed;
-  bottom: 100px; /* un poco más arriba del WhatsApp flotante */
+  bottom: 100px; /* arriba del WhatsApp flotante */
   right: 20px;
   background: white;
   color: #0d47a1;
@@ -141,8 +142,9 @@ h2 {
   border-radius: 14px;
   box-shadow: 0 6px 15px rgba(0,0,0,.25);
   font-weight: bold;
-  z-index: 9999; /* encima de todo */
+  z-index: 9999; /* siempre encima */
   pointer-events: auto;
+  width: max-content;
 }
 
 /* WhatsApp flotante */
@@ -231,21 +233,3 @@ h2 {
 .footer p {
   margin: 0;
   font-size: 0.95rem;
-  opacity: 0.9;
-}
-
-.footer span {
-  display: block;
-  margin-top: 0.5rem;
-  font-size: 0.85rem;
-  opacity: 0.75;
-}
-
-/* Subcategorías opcionales */
-h3 {
-  grid-column: 1 / -1;
-  margin: 1.2rem 0 0.5rem;
-  color: #1565c0;
-  border-left: 6px solid #1976d2;
-  padding-left: 10px;
-}
