@@ -187,9 +187,3 @@ function sendWhatsApp() {
 }
 
 renderProducts();
-
-  );
-}
-
-renderProducts();
-
